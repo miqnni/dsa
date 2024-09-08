@@ -97,11 +97,6 @@ public:
 		return nums;
 	}
 
-	/*
-	**************************
-	*			V2
-	**************************
-	*/
 	void sort(const std::vector<int>::iterator iStart, const std::vector<int>::iterator iEnd, const std::function<bool(int, int)> op =
 		[](int a, int b)
 		{
