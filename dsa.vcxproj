@@ -127,7 +127,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="lc0001_two_sum.h" />
+    <ClCompile Include="leetcode0001.cpp" />
+    <ClCompile Include="leetcode2257.cpp" />
+    <ClCompile Include="leetcode2516.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
