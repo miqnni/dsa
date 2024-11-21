@@ -5,6 +5,17 @@
 
 class Solution {
 private:
+    void printGrid(const std::vector<std::vector<int>>& grid) {
+        size_t m = grid.size();
+        size_t n = grid[0].size();
+        for (int i{}; i < m; i++) {
+            for (int j{}; j < n; j++) {
+                std::cout << grid[i][j] << " ";
+            }
+            std::cout << std::endl;
+        }
+    }
+
     enum TileState {
         Free = 0,
         HasGuard = 1,
@@ -29,6 +40,10 @@ private:
 public:
     int countUnguarded(int m, int n, std::vector<std::vector<int>>& guards, std::vector<std::vector<int>>& walls) {
 
+        // 0 -- nothing
+        // 1 -- is guarded
+        // 2 -- has guard
+        // 3 -- has wall
         std::vector<std::vector<TileState>> grid(
             m,
             std::vector<TileState>(n)
@@ -77,9 +92,9 @@ public:
                     break;
 
                 if (grid[i][guardPosJ] == Free) {
-                    grid[i][guardPosJ] = GuardedUp;
+                grid[i][guardPosJ] = GuardedUp;
                     freeCount--;
-                }
+            }
 
             }
 
@@ -89,7 +104,7 @@ public:
                     break;
 
                 if (grid[i][guardPosJ] == Free) {
-                    grid[i][guardPosJ] = GuardedDown;
+                grid[i][guardPosJ] = GuardedDown;
                     freeCount--;
                 }
             }
@@ -100,7 +115,7 @@ public:
                     break;
 
                 if (grid[guardPosI][j] == Free) {
-                    grid[guardPosI][j] = GuardedLeft;
+                grid[guardPosI][j] = GuardedLeft;
                     freeCount--;
                 }
             }
@@ -111,7 +126,7 @@ public:
                     break;
 
                 if (grid[guardPosI][j] == Free) {
-                    grid[guardPosI][j] = GuardedRight;
+                grid[guardPosI][j] = GuardedRight;
                     freeCount--;
                 }
             }
