@@ -39,7 +39,13 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="lc0001_two_sum.h">
+    <ClCompile Include="leetcode2516.cpp">
+      <Filter>Header Files\leetcode</Filter>
+    </ClCompile>
+    <ClCompile Include="leetcode2257.cpp">
+      <Filter>Header Files\leetcode</Filter>
+    </ClCompile>
+    <ClCompile Include="leetcode0001.cpp">
       <Filter>Header Files\leetcode</Filter>
     </ClCompile>
   </ItemGroup>
