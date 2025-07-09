@@ -4,10 +4,10 @@
 // DFS of a graph represented by an Adjacency Matrix
 class Solution {
 private:
-    /*
-    * A recursive function that performs all the DFS-related processing logic
-    * for an unvisited node.
-    **/
+    /**
+     * A recursive function that performs all the DFS-related processing logic
+     * for an unvisited node.
+     */
     void dfsVisit(const int &currNode, std::vector<std::vector<int>> &adj, std::vector<bool> &visited, std::vector<int> &path) {
         if (visited[currNode])
             throw std::runtime_error("You cannot visit a node more than once");
