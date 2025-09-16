@@ -45,7 +45,10 @@ public:
          * and the first column
          * (since we cannot take any items with capacity 0).
          */
-        std::vector<std::vector<int>> finalValues(n + 1, std::vector<int>(W + 1, 0));
+        std::vector<std::vector<int>> finalValues(
+            n + 1,
+            std::vector<int>(W + 1, 0)
+        );
 
         for (int i{ 1 }; i < static_cast<int>(n + 1); i++) {
             for (int j{ 1 }; j < W + 1; j++) {

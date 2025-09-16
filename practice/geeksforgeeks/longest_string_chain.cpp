@@ -1,76 +1,59 @@
-// TODO: Optimise in order to avoid Time Limit Exceeded.
-// For instance, generate possible predecessors in order to check all words in the words array / vector.
-
-#include <vector> // std::vector
+#include <vector> // std::vector<>
 #include <string> // std::string 
-#include <unordered_map> // std::unordered_map
-#include <iostream> // std::cout, std::endl
-#include <algorithm> // std::max
+#include <unordered_map> // std::unordered_map<>
+// #include <iostream> // std::cout, std::endl
+#include <algorithm> // std::max(), std::sort()
+#include <unordered_set> // std::unordered_set<>
 
 class Solution {
-    bool isPredecessor(std::string shorterWord, std::string longerWord) {
-        if (shorterWord.length() != longerWord.length() - 1)
-            return false;
+private:
+    std::unordered_set<std::string> wordsSet;
+    std::unordered_map<std::string, int> memo;
 
-        for (int i{}; i < longerWord.length(); i++) {
-            std::string longerWordWithoutLetter{ longerWord.substr(0, i) + longerWord.substr(i + 1) };
-            // std::cout << longerWordWithoutLetter << std::endl;
-            if (longerWordWithoutLetter == shorterWord)
-                return true;
+    int lcsInner(std::string chosenWord) {
+        // Check if the solution for this subproblem (word)
+        // does not already exist
+        if (memo.find(chosenWord) != memo.end())
+            return memo[chosenWord];
+
+        int maxChainLen{ 1 }; // Trivial answer: {chosenWord}.length()
+
+        // Generate the word's predecessors
+        for (int removedCharIdx{}; removedCharIdx < chosenWord.length(); removedCharIdx++) {
+            std::string predecessor{
+                chosenWord.substr(0, removedCharIdx) + chosenWord.substr(removedCharIdx + 1)
+            };
+
+            // Check if the predecessor is inside the provided words list / vector
+            if (wordsSet.find(predecessor) == wordsSet.end())
+                continue;
+
+            // Now that we know that the current predecessor is inside `words`,
+            // run its own subproblem recursively
+            maxChainLen = std::max(maxChainLen, 1 + lcsInner(predecessor));
         }
-        return false;
+
+        memo[chosenWord] = maxChainLen;
+        return maxChainLen;
     }
 
-    int longestStringChainMemoInner(std::vector<std::string>& words, std::unordered_map<std::string, int>& memo, std::string currWord) {
-        // Check if the subproblem has not been already solved.
-        std::unordered_map<std::string, int>::iterator foundResult{ memo.find(currWord) };
-        if (foundResult != memo.end())
-            return foundResult->second;
-
-        // Base case
-        if (currWord.length() == 1) {
-            memo[currWord] = 1;
-            return 1;
-        }
-
-        int maxChainLength{};
-        for (const std::string& word : words) {
-            if (isPredecessor(word, currWord)) {
-                maxChainLength = std::max(
-                    maxChainLength,
-                    1 + longestStringChainMemoInner(words, memo, word)
-                );
-            }
-        }
-        return maxChainLength;
-
-        // Find the maximum recursion depth for the current word.
-
-    }
-
-    int longestStringChainMemoOuter(std::vector<std::string>& words) {
-        std::unordered_map<std::string, int> memo;
-        int maxVal{ 1 };
-        for (const std::string& word : words) {
-            maxVal = std::max(maxVal, longestStringChainMemoInner(words, memo, word));
-        }
-        return maxVal;
-    }
 public:
     int longestStringChain(std::vector<std::string>& words) {
+        wordsSet = std::unordered_set<std::string>(words.begin(), words.end());
 
-        return longestStringChainMemoOuter(words);
+        // Sort the words in order to start with the longest ones
+        std::sort(words.begin(), words.end(),
+            [](const std::string& wA, const std::string& wB) {
+                return wA.size() < wB.size(); // Sort DESCENDING, hence `<` instead of `>`
+            }
+        );
+
+        int maxAns{};
+
+        for (const std::string& word : words) {
+            maxAns = std::max(maxAns, lcsInner(word));
+        }
+
+        return maxAns;
     }
 };
-
-// ********************************
-
-void driver() {
-    Solution sol;
-    std::vector<std::string> vin({
-        "ba", "b", "a", "bca", "bda", "bdca" // 4
-        // "abc", "a", "ab" // 3
-        // "abcd", "dbqca" // 1
-        });
-    std::cout << "OUTPUT: " << sol.longestStringChain(vin) << std::endl;
-}
